@@ -56,5 +56,14 @@ RUN mkdir -p ${ANDROID_HOME}/cmdline-tools && \
     "ndk;27.0.12077973" \
     "cmake;3.22.1"
 
+# Create a temporary project to warm up Gradle and Flutter caches
+RUN mkdir -p /tmp/flutter_project && \
+    cd /tmp/flutter_project && \
+    flutter create . && \
+    flutter build apk --release --split-per-abi && \
+    flutter clean && \
+    cd / && \
+    rm -rf /tmp/flutter_project
+
 # Final doctor check
 RUN flutter doctor
